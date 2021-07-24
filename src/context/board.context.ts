@@ -1,12 +1,13 @@
 import {createContext} from "react";
-import {AbstractBoard} from "../types/AbstractBoard";
-import {Coord} from "../types/Coord";
-import {defaultAbstractBoard} from "../types/AbstractBoard";
+import {AbstractBoard} from "../types/board.type";
+import {Coord} from "../types/coord.type";
+import {defaultAbstractBoard} from "../types/board.type";
+import {BoardPiece} from "../types/piece.type";
 
 export interface Board{
   abstractBoard: AbstractBoard,
-  selectedPiece: Coord | undefined,
-  selectPiece: (coord: Coord | undefined) => void
+  selectedPiece: BoardPiece | undefined,
+  selectPiece: (piece: BoardPiece | undefined) => void
   movePiece: (start: Coord, end: Coord) => void
 }
 

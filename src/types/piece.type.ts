@@ -1,3 +1,12 @@
+import {Coord} from "./coord.type";
+
+// This interface represents a piece that we can show on-screen (props for the piece component)
+export interface BoardPiece{
+  abstractPiece: AbstractPiece,
+  coord: Coord
+}
+
+// This interface represents an abstract chess piece
 export interface AbstractPiece {
   pieceKind: PieceKind,
   pieceColor: PieceColor,

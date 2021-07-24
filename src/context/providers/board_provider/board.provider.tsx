@@ -1,12 +1,12 @@
 import {ComponentProps, useEffect, useState} from "react";
 import {BoardContext} from "../../board.context";
-import {AbstractBoard, fenToAbstractBoard} from "../../../types/AbstractBoard";
-import { Coord } from "../../../types/Coord";
-import {defaultAbstractBoard} from "../../../types/AbstractBoard";
+import {AbstractBoard, defaultAbstractBoard, fenToAbstractBoard} from "../../../types/board.type";
+import {Coord} from "../../../types/coord.type";
+import {BoardPiece, PieceColor} from "../../../types/piece.type";
 
 export default function BoardProvider({children}: ComponentProps<any>){
   const [abstractBoard, setAbstractBoard] = useState<AbstractBoard>(defaultAbstractBoard)
-  const [selectedPiece, setSelectedPiece] = useState<Coord | undefined>(undefined)
+  const [selectedPiece, setSelectedPiece] = useState<BoardPiece | undefined>(undefined)
 
   const movePiece = (start: Coord, end: Coord) => {
     if(JSON.stringify(start) === JSON.stringify(end)){
@@ -21,7 +21,8 @@ export default function BoardProvider({children}: ComponentProps<any>){
     abstractBoard.squareTable[start.row][start.col].hasPiece = false
     abstractBoard.squareTable[start.row][start.col].piece = undefined
     setSelectedPiece(undefined)
-    setAbstractBoard({squareTable: [...abstractBoard.squareTable], sideToMove: abstractBoard.sideToMove})
+    setAbstractBoard({squareTable: [...abstractBoard.squareTable],
+      sideToMove: abstractBoard.sideToMove === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE})
   }
 
   useEffect(() => {

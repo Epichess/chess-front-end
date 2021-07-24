@@ -1,5 +1,5 @@
 import React, {useContext} from "react";
-import {AbstractPiece, PieceColor, PieceKind} from "../types/AbstractPiece";
+import {AbstractPiece, BoardPiece, PieceColor, PieceKind} from "../types/piece.type";
 import wp from '../assets/pieces/cburnett/wp.svg'
 import wn from '../assets/pieces/cburnett/wn.svg'
 import wb from '../assets/pieces/cburnett/wb.svg'
@@ -13,32 +13,40 @@ import br from '../assets/pieces/cburnett/br.svg'
 import bq from '../assets/pieces/cburnett/bq.svg'
 import bk from '../assets/pieces/cburnett/bk.svg'
 import styled from "styled-components";
-import {Coord} from "../types/Coord";
 import {BoardContext} from "../context/board.context";
 
 export interface PieceProps{
-  coord: Coord,
-  abstractPiece: AbstractPiece
+  piece: BoardPiece
 }
 
 const PieceImg = styled.img`
     height: 100%;
   `
 
-export default function Piece({coord, abstractPiece}:PieceProps){
+export default function Piece({piece}:PieceProps){
   const boardContext = useContext(BoardContext)
 
   const onClick = () => {
     if (boardContext.selectedPiece) {
-      boardContext.movePiece(boardContext.selectedPiece, coord)
+      if(boardContext.selectedPiece.abstractPiece.pieceColor === piece.abstractPiece.pieceColor){
+        console.log(boardContext.selectedPiece.abstractPiece.pieceColor)
+        console.log(piece.abstractPiece.pieceColor)
+        boardContext.selectPiece(undefined)
+      }else{
+        console.log(boardContext.selectedPiece.abstractPiece.pieceColor)
+        console.log(piece.abstractPiece.pieceColor)
+        boardContext.movePiece(boardContext.selectedPiece.coord, piece.coord)
+      }
     } else {
-      boardContext.selectPiece(coord)
+      if(boardContext.abstractBoard.sideToMove === piece.abstractPiece.pieceColor) {
+         boardContext.selectPiece(piece)
+      }
     }
   }
 
   return(
       <PieceImg
-          src = {abstractPieceToSvg(abstractPiece)}
+          src = {abstractPieceToSvg(piece.abstractPiece)}
           alt = 'chessPiece'
           onClick={onClick}
       />

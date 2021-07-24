@@ -1,8 +1,8 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import styled from "styled-components";
-import {AbstractPiece} from "../types/AbstractPiece";
+import {AbstractPiece} from "../types/piece.type";
 import Piece from "./piece.component";
-import {Coord} from "../types/Coord";
+import {Coord} from "../types/coord.type";
 import {BoardContext} from "../context/board.context";
 
 export interface SquareProps{
@@ -18,28 +18,42 @@ const Cell = styled.div<{isSelected: boolean, isLight: boolean}>`
     flex: 1;
     background-color: ${props => props.isLight? '#703104' : '#E19762'};
     background-color: ${props => props.isSelected && '#90d147'};
+    position: relative;
   `
+
+const TargetCell = styled.span<{containsPiece: boolean, isTargeted: boolean}>`
+  background: ${props => props.containsPiece ? 
+          'radial-gradient(transparent 0%, transparent 79%, rgba(20,85,0,0.3) 80%);' :
+          'radial-gradient(rgba(20,85,30,0.5) 19%, rgba(0,0,0,0) 20%)'};
+  background: ${props => !props.isTargeted && 'transparent'};
+  width: 100%;
+  height: 100%;
+  position: absolute;
+`
 
 export default function Square({coord, isLight, isTargeted, isSelected, containsPiece, piece}: SquareProps){
 
   const onClick = () => {
-    console.log('got here')
     if(boardContext.selectedPiece){
-      boardContext.movePiece(boardContext.selectedPiece, coord)
+      boardContext.movePiece(boardContext.selectedPiece.coord, coord)
     }
   }
 
   const boardContext = useContext(BoardContext)
   return(
     <Cell
-        onClick={onClick}
+
         isLight = {isLight}
         isSelected = {isSelected}
     >
-      {piece !== undefined && <Piece
-          coord={coord}
-          abstractPiece={piece}
-      />}
+      <TargetCell containsPiece={piece !== undefined} onClick={onClick} isTargeted={isTargeted}>
+        {piece !== undefined && <Piece
+            piece={{
+             coord: coord,
+             abstractPiece: piece
+            }}
+        />}
+      </TargetCell>
     </Cell>
   )
 }

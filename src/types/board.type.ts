@@ -1,6 +1,7 @@
-import {AbstractSquare} from "./AbstractSquare";
-import {charToPiece, PieceColor} from "./AbstractPiece";
+import {AbstractSquare} from "./square.type";
+import {charToPiece, PieceColor} from "./piece.type";
 
+// This interface represents an abstract chess board
 export interface AbstractBoard{
   squareTable: AbstractSquare[][]
   sideToMove: PieceColor

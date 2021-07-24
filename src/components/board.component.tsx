@@ -1,9 +1,8 @@
 import React, {useContext, useEffect, useState} from "react";
 import styled from "styled-components";
-import {AbstractBoard} from "../types/AbstractBoard";
+import {AbstractBoard} from "../types/board.type";
 import Square from "./square.component";
 import {BoardContext} from "../context/board.context";
-import {Coord} from "../types/Coord";
 
 const BoardContainer = styled.div`
   display: flex;
@@ -37,14 +36,15 @@ export default function Board(){
       return false
     }
 
-    return(row === boardContext.selectedPiece.row && col === boardContext.selectedPiece.col)
+    return(row === boardContext.selectedPiece.coord.row && col === boardContext.selectedPiece.coord.col)
   }
 
   return(
       <BoardContainer>
         {abstractBoard.squareTable.map((boardRow, rowIndex) =>
-            <BoardRow>{boardRow.map((square, colIndex) =>
+            <BoardRow key={`${rowIndex}`}>{boardRow.map((square, colIndex) =>
                 <Square
+                    key={`${colIndex}`}
                     coord={{row: rowIndex,
                             col: colIndex}}
                     isLight={(rowIndex + colIndex) % 2 === 1}

@@ -1,4 +1,4 @@
-import {AbstractPiece} from "./AbstractPiece";
+import {AbstractPiece} from "./piece.type";
 
 export interface AbstractSquare{
   hasPiece: boolean,
