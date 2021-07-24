@@ -1,13 +1,20 @@
 import {AbstractSquare} from "./AbstractSquare";
-import {charToPiece} from "./AbstractPiece";
+import {charToPiece, PieceColor} from "./AbstractPiece";
 
 export interface AbstractBoard{
   squareTable: AbstractSquare[][]
+  sideToMove: PieceColor
+}
+
+export const defaultAbstractBoard: AbstractBoard = {
+  squareTable: [],
+  sideToMove: PieceColor.WHITE
 }
 
 export function fenToAbstractBoard(fen: string): AbstractBoard{
   const board: AbstractSquare[][] = []
-  const boardRows = fen.split(' ')[0].split('/');
+  const fen_fields = fen.split(' ')
+  const boardRows = fen_fields[0].split('/');
   for (const rowString of boardRows){
     const row = []
     for (const c of rowString.split("")){
@@ -24,8 +31,14 @@ export function fenToAbstractBoard(fen: string): AbstractBoard{
     }
     board.push(row)
   }
+
+  let sideToMove: PieceColor = PieceColor.WHITE;
+  if (fen_fields[1] === 'b'){
+    sideToMove = PieceColor.BLACK
+  }
   return {
-    squareTable: board
+    squareTable: board,
+    sideToMove: sideToMove
   }
 }
 

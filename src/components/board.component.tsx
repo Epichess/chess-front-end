@@ -8,7 +8,8 @@ import {Coord} from "../types/Coord";
 const BoardContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 800px;
+  height: 800px;
   background-color: red;
   &:hover{
     cursor: pointer;

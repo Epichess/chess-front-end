@@ -6,6 +6,7 @@ import {BrowserRouter, Switch, Route} from "react-router-dom";
 import LandingPage from "./pages/landing.page";
 import TestPage from "./pages/test.page";
 import Provider from "./context/providers/main.provider";
+import GamePage from "./pages/game.page";
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route path = "/game">
+              <GamePage/>
             </Route>
             <Route path = "/test">
               <TestPage/>

@@ -1,6 +1,7 @@
 import {createContext} from "react";
 import {AbstractBoard} from "../types/AbstractBoard";
 import {Coord} from "../types/Coord";
+import {defaultAbstractBoard} from "../types/AbstractBoard";
 
 export interface Board{
   abstractBoard: AbstractBoard,
@@ -10,7 +11,7 @@ export interface Board{
 }
 
 const defaultValues = {
-  abstractBoard: {squareTable: []},
+  abstractBoard: defaultAbstractBoard,
   selectedPiece: undefined,
   selectPiece: () => {},
   movePiece: () => {}

@@ -2,9 +2,10 @@ import {ComponentProps, useEffect, useState} from "react";
 import {BoardContext} from "../../board.context";
 import {AbstractBoard, fenToAbstractBoard} from "../../../types/AbstractBoard";
 import { Coord } from "../../../types/Coord";
+import {defaultAbstractBoard} from "../../../types/AbstractBoard";
 
 export default function BoardProvider({children}: ComponentProps<any>){
-  const [abstractBoard, setAbstractBoard] = useState<AbstractBoard>({squareTable: []})
+  const [abstractBoard, setAbstractBoard] = useState<AbstractBoard>(defaultAbstractBoard)
   const [selectedPiece, setSelectedPiece] = useState<Coord | undefined>(undefined)
 
   const movePiece = (start: Coord, end: Coord) => {
@@ -20,7 +21,7 @@ export default function BoardProvider({children}: ComponentProps<any>){
     abstractBoard.squareTable[start.row][start.col].hasPiece = false
     abstractBoard.squareTable[start.row][start.col].piece = undefined
     setSelectedPiece(undefined)
-    setAbstractBoard({squareTable: [...abstractBoard.squareTable]})
+    setAbstractBoard({squareTable: [...abstractBoard.squareTable], sideToMove: abstractBoard.sideToMove})
   }
 
   useEffect(() => {
