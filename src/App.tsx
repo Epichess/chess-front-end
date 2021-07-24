@@ -1,25 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Board from "./components/board.component";
+import BoardProvider from "./context/providers/board_provider/board.provider";
+import {BrowserRouter, Switch, Route} from "react-router-dom";
+import LandingPage from "./pages/landing.page";
+import TestPage from "./pages/test.page";
+import Provider from "./context/providers/main.provider";
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Provider>
+        <BrowserRouter>
+          <Switch>
+            <Route path = "/game">
+            </Route>
+            <Route path = "/test">
+              <TestPage/>
+            </Route>
+            <Route path = "/">
+              <LandingPage/>
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </Provider>
   );
 }
 
