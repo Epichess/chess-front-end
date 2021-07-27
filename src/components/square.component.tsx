@@ -4,6 +4,7 @@ import {AbstractPiece} from "../types/piece.type";
 import Piece from "./piece.component";
 import {Coord} from "../types/coord.type";
 import {BoardContext} from "../context/board.context";
+import { pong } from "../api/board.api";
 
 export interface SquareProps{
   coord: Coord
@@ -34,6 +35,7 @@ const TargetCell = styled.span<{containsPiece: boolean, isTargeted: boolean}>`
 export default function Square({coord, isLight, isTargeted, isSelected, containsPiece, piece}: SquareProps){
 
   const onClick = () => {
+    pong()
     if(boardContext.selectedPiece){
       boardContext.movePiece(boardContext.selectedPiece.coord, coord)
     }
