@@ -19,14 +19,14 @@ export function joinGame(){
 }
 
 
-socket.on('pong', function () {
-    console.log('Pong')
+socket.on('pong', function (msg) {
+     console.log(msg);
 })
 
-socket.on('creating', function () {
-    console.log('creating')
+socket.on('creating', function (msg) {
+    console.log('received:\n', msg)
 })
 
 socket.on('joining', function () {
-    console.log('joining')
+    console.log('joining game')
 })

@@ -4,6 +4,7 @@ import {Grid, Hidden} from "@material-ui/core";
 import anarchy_logo from '../assets/anarchy_logo.png'
 import { useHistory } from 'react-router-dom'
 import { createGame, joinGame } from '../api/board.api';
+import { player } from "../audio/audio";
 
 const Background = styled.div`
   background-color: #EC1722;
@@ -20,15 +21,18 @@ const Logo = styled.img`
 
 export default function LandingPage(){
   const history = useHistory();
+  player.playIntro();
 
   const handlePlayBtnClick = () => {
     console.log("Play Now")
+    player.playButton();
     createGame()
     history.push('/Game')
   }
 
   const handleJoinBtnClick = () => {
     console.log("Join Now")
+    player.playButton();
     joinGame()
     history.push('/Game')
   }
@@ -37,10 +41,7 @@ export default function LandingPage(){
       <Background>
         <Grid container>
           <Grid item xs={12} md={4}>
-            <div>
-              aaa
-            </div>
-            <button onClick={handlePlayBtnClick}>Play now</button> 
+            <button onClick={handlePlayBtnClick}>Play now</button>
             <br/>
             <button onClick={handleJoinBtnClick}>Join now</button>
           </Grid>

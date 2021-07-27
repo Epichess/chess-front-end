@@ -9,20 +9,21 @@ export default function BoardProvider({children}: ComponentProps<any>){
   const [selectedPiece, setSelectedPiece] = useState<BoardPiece | undefined>(undefined)
 
   const movePiece = (start: Coord, end: Coord) => {
-    if(JSON.stringify(start) === JSON.stringify(end)){
-      setSelectedPiece(undefined)
-      return
-    }
-    const startSqr = abstractBoard.squareTable[start.row][start.col]
-    const endSqr = abstractBoard.squareTable[end.row][end.col]
-    endSqr.hasPiece = true
-    startSqr.hasPiece = false
-    endSqr.piece = JSON.parse(JSON.stringify(startSqr.piece))
-    abstractBoard.squareTable[start.row][start.col].hasPiece = false
-    abstractBoard.squareTable[start.row][start.col].piece = undefined
-    setSelectedPiece(undefined)
-    setAbstractBoard({squareTable: [...abstractBoard.squareTable],
-      sideToMove: abstractBoard.sideToMove === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE})
+
+  //   if(JSON.stringify(start) === JSON.stringify(end)){
+  //     setSelectedPiece(undefined)
+  //     return
+  //   }
+  //   const startSqr = abstractBoard.squareTable[start.row][start.col]
+  //   const endSqr = abstractBoard.squareTable[end.row][end.col]
+  //   endSqr.hasPiece = true
+  //   startSqr.hasPiece = false
+  //   endSqr.piece = JSON.parse(JSON.stringify(startSqr.piece))
+  //   abstractBoard.squareTable[start.row][start.col].hasPiece = false
+  //   abstractBoard.squareTable[start.row][start.col].piece = undefined
+  //   setSelectedPiece(undefined)
+  //   setAbstractBoard({squareTable: [...abstractBoard.squareTable],
+  //     sideToMove: abstractBoard.sideToMove === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE})
   }
 
   useEffect(() => {
