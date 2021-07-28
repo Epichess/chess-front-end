@@ -26,6 +26,7 @@ export default function LandingPage(){
   const handlePlayBtnClick = () => {
     console.log("Play Now")
     player.playButton();
+    player.pauseIntro();
     createGame()
     history.push('/Game')
   }
