@@ -3,7 +3,6 @@ import Board from "../components/board.component";
 import { createStyles, makeStyles, withStyles, Theme } from '@material-ui/core/styles';
 import BoardProvider from "../context/providers/board_provider/board.provider";
 import { Grid, FormControl, InputLabel, MenuItem, Select, FormHelperText } from "@material-ui/core";
-import { createGame } from "../api/board.api";
 import SocketProvider from "../context/providers/socket_provider/socket.io.provider";
 import { player } from "../audio/audio";
 import banner from "../assets/anarchybanner.jpg";
@@ -12,7 +11,6 @@ import logo_anarchychess from "../assets/logo_anarchychess.png";
 import bg from "../assets/main_lesslesshardcore.gif";
 import styled from "styled-components";
 import InputBase from '@material-ui/core/InputBase';
-import { newGame } from "../api/board.api";
 
 
 const options = [
@@ -82,7 +80,7 @@ const Main = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  padding-top 20px;
+  padding-top: 20px;
 `
 const Rectangle = styled.div`
   background-color: white;
@@ -233,7 +231,7 @@ const GamePage = () => {
                       <MenuItem value={30}>30 min</MenuItem>
                     </Select>
                   </FormControl>
-                  <PlayText onClick={() => { newGame() }}>PLAY</PlayText>
+                  <PlayText onClick={() => {}}>PLAY</PlayText>
                 </TextRectangle>
               </Rectangle>
             </Main>
