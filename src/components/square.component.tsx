@@ -35,7 +35,6 @@ const TargetCell = styled.span<{containsPiece: boolean, isTargeted: boolean}>`
 export default function Square({coord, isLight, isTargeted, isSelected, containsPiece, piece}: SquareProps){
 
   const onClick = () => {
-    pong()
     if(boardContext.selectedPiece){
       boardContext.movePiece(boardContext.selectedPiece.coord, coord)
     }

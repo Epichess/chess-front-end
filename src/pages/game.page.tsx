@@ -4,6 +4,7 @@ import { createStyles, makeStyles, withStyles, Theme } from '@material-ui/core/s
 import BoardProvider from "../context/providers/board_provider/board.provider";
 import {Grid, FormControl, InputLabel, MenuItem, Select, FormHelperText} from "@material-ui/core";
 import {createGame} from "../api/board.api";
+import SocketProvider from "../context/providers/socket_provider/socket.io.provider";
 import {player} from "../audio/audio";
 import banner from "../assets/anarchybanner.jpg";
 import anarchy_logo from "../assets/logo.png";
@@ -193,7 +194,8 @@ const GamePage = () => {
     };
 
   return (
-      <BoardProvider >
+      <SocketProvider>
+      <BoardProvider>
       <div style={{
           backgroundColor: '#E9E3E3',
           width: '100vw',
@@ -235,11 +237,10 @@ const GamePage = () => {
               </TextRectangle>
           </Rectangle>
           </Main>
-
-
       </Background>
       </div>
     </BoardProvider>
+    </SocketProvider>
   );
 };
 
