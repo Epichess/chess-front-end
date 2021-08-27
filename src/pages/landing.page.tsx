@@ -137,6 +137,7 @@ export default function LandingPage(){
   //   joinGame()
   //   history.push('/Game')
   // }
+  
 
   return(
       <Background>
@@ -153,7 +154,7 @@ export default function LandingPage(){
             <Rectangle>
                 <img src={logo_anarchychess} style={{height: '100%'}} alt='anarchychess_logo' />
                 <TextRectangle>
-                    <PlayText onClick={handlePlayBtnClick}>PLAY</PlayText>
+                    <PlayText onClick={() => {}}>PLAY</PlayText>
                     <SignUpText>PATZ UP</SignUpText>
                 </TextRectangle>
             </Rectangle>
