@@ -2,21 +2,21 @@ import React from 'react';
 import Board from "../components/board.component";
 import { createStyles, makeStyles, withStyles, Theme } from '@material-ui/core/styles';
 import BoardProvider from "../context/providers/board_provider/board.provider";
-import {Grid, FormControl, InputLabel, MenuItem, Select, FormHelperText} from "@material-ui/core";
-import {createGame} from "../api/board.api";
+import { Grid, FormControl, InputLabel, MenuItem, Select, FormHelperText } from "@material-ui/core";
+import { createGame } from "../api/board.api";
 import SocketProvider from "../context/providers/socket_provider/socket.io.provider";
-import {player} from "../audio/audio";
+import { player } from "../audio/audio";
 import banner from "../assets/anarchybanner.jpg";
 import anarchy_logo from "../assets/logo.png";
 import logo_anarchychess from "../assets/logo_anarchychess.png";
 import bg from "../assets/main_lesslesshardcore.gif";
 import styled from "styled-components";
 import InputBase from '@material-ui/core/InputBase';
-
+import { newGame } from "../api/board.api";
 
 
 const options = [
-    '5 min', '10 min', '30 min'
+  '5 min', '10 min', '30 min'
 ];
 const defaultOption = options[0];
 
@@ -151,95 +151,95 @@ const PlayText = styled.div`
 `
 
 const BootstrapInput = withStyles((theme: Theme) =>
-    createStyles({
-        input: {
-            boxSizing: 'border-box',
-            borderRadius: '3px',
-            backgroundColor: '#EBEBEB',
-            border: '1px solid #E2DCDC',
-            height: '2.8vw',
-            width: '8.2vw',
-            transition: theme.transitions.create(['border-color', 'box-shadow']),
-            fontStyle: 'normal',
-            fontWeight: 'bold',
-            fontSize: '1.2vw',
-            color: '#1E2439',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontFamily: 'IBM Plex Sans',
-            '&:focus': {
-                borderRadius: 4,
-                borderColor: '#80bdff',
-                boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-            },
-        },
-    }),
+  createStyles({
+    input: {
+      boxSizing: 'border-box',
+      borderRadius: '3px',
+      backgroundColor: '#EBEBEB',
+      border: '1px solid #E2DCDC',
+      height: '2.8vw',
+      width: '8.2vw',
+      transition: theme.transitions.create(['border-color', 'box-shadow']),
+      fontStyle: 'normal',
+      fontWeight: 'bold',
+      fontSize: '1.2vw',
+      color: '#1E2439',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: 'IBM Plex Sans',
+      '&:focus': {
+        borderRadius: 4,
+        borderColor: '#80bdff',
+        boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+      },
+    },
+  }),
 )(InputBase);
 
 const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        margin: {
-            margin: theme.spacing(1),
-        },
-    }),
+  createStyles({
+    margin: {
+      margin: theme.spacing(1),
+    },
+  }),
 );
 
 
 const GamePage = () => {
-    const classes = useStyles();
-    const [age, setAge] = React.useState('5');
-    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setAge(event.target.value as string);
-    };
+  const classes = useStyles();
+  const [age, setAge] = React.useState('5');
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setAge(event.target.value as string);
+  };
 
   return (
-      <SocketProvider>
+    <SocketProvider>
       <BoardProvider>
-      <div style={{
+        <div style={{
           backgroundColor: '#E9E3E3',
           width: '100vw',
           height: '1000vh',
           display: 'flex'
-      }}>
-      <Background>
-          <style>
+        }}>
+          <Background>
+            <style>
               @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap');
-          </style>
-          <img src={banner} width='100%' alt='banner'/>
-          <BottomBanner>
-              <AnarchyLogo src={anarchy_logo}/>
+            </style>
+            <img src={banner} width='100%' alt='banner' />
+            <BottomBanner>
+              <AnarchyLogo src={anarchy_logo} />
               <TextDiv>
-                  <MainText>Anarchy Chess</MainText>
-                  <SubText>play/AnarchyChess</SubText>
+                <MainText>Anarchy Chess</MainText>
+                <SubText>play/AnarchyChess</SubText>
               </TextDiv>
-          </BottomBanner>
-          <Main>
-          <Board/>
+            </BottomBanner>
+            <Main>
+              <Board />
 
-          <Rectangle>
-              <TextRectangle>
+              <Rectangle>
+                <TextRectangle>
                   <FormControl className={classes.margin}>
-                      <InputLabel id="demo-customized-select-label">Duration</InputLabel>
-                      <Select
-                          labelId="demo-customized-select-label"
-                          id="demo-customized-select"
-                          value={age}
-                          onChange={handleChange}
-                          input={<BootstrapInput />}
-                      >
-                          <MenuItem value={5}>5 min</MenuItem>
-                          <MenuItem value={10}>10 min</MenuItem>
-                          <MenuItem value={30}>30 min</MenuItem>
-                      </Select>
+                    <InputLabel id="demo-customized-select-label">Duration</InputLabel>
+                    <Select
+                      labelId="demo-customized-select-label"
+                      id="demo-customized-select"
+                      value={age}
+                      onChange={handleChange}
+                      input={<BootstrapInput />}
+                    >
+                      <MenuItem value={5}>5 min</MenuItem>
+                      <MenuItem value={10}>10 min</MenuItem>
+                      <MenuItem value={30}>30 min</MenuItem>
+                    </Select>
                   </FormControl>
-                  <PlayText>PLAY</PlayText>
-              </TextRectangle>
-          </Rectangle>
-          </Main>
-      </Background>
-      </div>
-    </BoardProvider>
+                  <PlayText onClick={() => { newGame() }}>PLAY</PlayText>
+                </TextRectangle>
+              </Rectangle>
+            </Main>
+          </Background>
+        </div>
+      </BoardProvider>
     </SocketProvider>
   );
 };
