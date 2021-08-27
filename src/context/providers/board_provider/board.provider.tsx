@@ -1,11 +1,11 @@
-import {ComponentProps, useContext, useEffect, useState} from "react";
-import {BoardContext} from "../../board.context";
-import {AbstractBoard, defaultAbstractBoard, fenToAbstractBoard} from "../../../types/board.type";
-import {Coord} from "../../../types/coord.type";
-import {BoardPiece, PieceColor} from "../../../types/piece.type";
-import {SocketContext} from "../../socket.io.context";
+import { ComponentProps, useContext, useEffect, useState } from "react";
+import { BoardContext } from "../../board.context";
+import { AbstractBoard, defaultAbstractBoard, fenToAbstractBoard } from "../../../types/board.type";
+import { Coord } from "../../../types/coord.type";
+import { BoardPiece, PieceColor } from "../../../types/piece.type";
+import { SocketContext } from "../../socket.io.context";
 
-export default function BoardProvider({children}: ComponentProps<any>){
+export default function BoardProvider({ children }: ComponentProps<any>) {
   const [abstractBoard, setAbstractBoard] = useState<AbstractBoard>(defaultAbstractBoard)
   const [selectedPiece, setSelectedPiece] = useState<BoardPiece | undefined>(undefined)
   const [gameUuid, setGameUuid] = useState<string | undefined>(undefined)
@@ -53,22 +53,26 @@ export default function BoardProvider({children}: ComponentProps<any>){
     abstractBoard.squareTable[start.row][start.col].hasPiece = false
     abstractBoard.squareTable[start.row][start.col].piece = undefined
     setSelectedPiece(undefined)
-    setAbstractBoard({squareTable: [...abstractBoard.squareTable],
-      sideToMove: abstractBoard.sideToMove === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE})
+    setAbstractBoard({
+      squareTable: [...abstractBoard.squareTable],
+      sideToMove: abstractBoard.sideToMove === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE
+    })
+    if (socketContext.socket !== undefined)
+      socketContext.socket.emit('make_move', { 'uuid': '6cca354c-8c0a-4b5b-81dd-f0bac33027f6', 'start': [start.row, start.col], 'end': [end.row, end.col] })
   }
 
   const movePiece = (start: Coord, end: Coord) => {
     socketContext.movePiece(start, end, 1, gameUuid!)
   }
 
-  return(
-      <BoardContext.Provider value = {{
-        abstractBoard,
-        selectedPiece,
-        selectPiece: setSelectedPiece,
-        movePiece
-      }}>
-        {children}
-      </BoardContext.Provider>
+  return (
+    <BoardContext.Provider value={{
+      abstractBoard,
+      selectedPiece,
+      selectPiece: setSelectedPiece,
+      movePiece
+    }}>
+      {children}
+    </BoardContext.Provider>
   )
 }
