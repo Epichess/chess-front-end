@@ -8,11 +8,40 @@ import { SocketContext } from "../../socket.io.context";
 export default function BoardProvider({ children }: ComponentProps<any>) {
   const [abstractBoard, setAbstractBoard] = useState<AbstractBoard>(defaultAbstractBoard)
   const [selectedPiece, setSelectedPiece] = useState<BoardPiece | undefined>(undefined)
+  const [gameUuid, setGameUuid] = useState<string | undefined>(undefined)
 
   const socketContext = useContext(SocketContext);
 
-  const movePiece = (start: Coord, end: Coord) => {
-    if (JSON.stringify(start) === JSON.stringify(end)) {
+  useEffect(() => {
+    socketContext.socket.on('pong', function (msg) {
+      console.log(msg);
+    })
+
+    socketContext.socket.on('create_game', function (msg) {
+      console.log('create')
+      const data = JSON.parse(msg['data']);
+      setGameUuid(data[0]['fields']['uuid']);
+      console.log('UUID: ' + JSON.parse(msg['data'])[0]['fields']['uuid'])
+    })
+
+    socketContext.socket.on('join_game', function (msg) {
+      console.log('join')
+      const data = JSON.parse(msg['data']);
+      setGameUuid(data[0]['fields']['uuid']);
+      console.log('UUID: ' + JSON.parse(msg['data'])[0]['fields']['uuid'])
+    })
+
+    socketContext.socket.on('make_move', function (msg) {
+      console.log(msg);
+    })
+
+    socketContext.newGame();
+    setAbstractBoard(fenToAbstractBoard('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'))
+  }, [])
+
+
+  const movePieceLocal = (start: Coord, end: Coord) => {
+    if(JSON.stringify(start) === JSON.stringify(end)){
       setSelectedPiece(undefined)
       return
     }
@@ -32,12 +61,9 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
       socketContext.socket.emit('make_move', { 'uuid': '6cca354c-8c0a-4b5b-81dd-f0bac33027f6', 'start': [start.row, start.col], 'end': [end.row, end.col] })
   }
 
-  useEffect(() => {
-    if (socketContext.socket) {
-      socketContext.socket.emit('ping', {});
-      setAbstractBoard(fenToAbstractBoard('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'))
-    }
-  }, [socketContext.socket])
+  const movePiece = (start: Coord, end: Coord) => {
+    socketContext.movePiece(start, end, 1, gameUuid!)
+  }
 
   return (
     <BoardContext.Provider value={{

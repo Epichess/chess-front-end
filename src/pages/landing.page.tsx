@@ -6,7 +6,7 @@ import bg from '../assets/main_lesslesshardcore.gif'
 import banner from '../assets/anarchybanner.jpg'
 import logo_anarchychess from '../assets/logo_anarchychess.png'
 import { useHistory } from 'react-router-dom'
-import { createGame, joinGame } from '../api/board.api';
+// import { createGame, joinGame } from '../api/board.api';
 import { player } from "../audio/audio";
 
 const BottomBanner = styled.div`
@@ -123,20 +123,20 @@ const SignUpText = styled.div`
 export default function LandingPage(){
   const history = useHistory();
 
-  const handlePlayBtnClick = () => {
-    console.log("Play Now")
-    player.playButton();
-    player.pauseIntro();
-    createGame()
-    history.push('/Game')
-  }
-
-  const handleJoinBtnClick = () => {
-    console.log("Join Now")
-    player.playButton();
-    joinGame()
-    history.push('/Game')
-  }
+  // const handlePlayBtnClick = () => {
+  //   console.log("Play Now")
+  //   player.playButton();
+  //   player.pauseIntro();
+  //   createGame()
+  //   history.push('/Game')
+  // }
+  //
+  // const handleJoinBtnClick = () => {
+  //   console.log("Join Now")
+  //   player.playButton();
+  //   joinGame()
+  //   history.push('/Game')
+  // }
 
   return(
       <Background>

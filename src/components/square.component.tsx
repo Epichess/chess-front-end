@@ -4,7 +4,6 @@ import {AbstractPiece} from "../types/piece.type";
 import Piece from "./piece.component";
 import {Coord} from "../types/coord.type";
 import {BoardContext} from "../context/board.context";
-import { pong } from "../api/board.api";
 
 export interface SquareProps{
   coord: Coord
