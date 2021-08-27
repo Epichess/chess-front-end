@@ -8,11 +8,39 @@ import {SocketContext} from "../../socket.io.context";
 export default function BoardProvider({children}: ComponentProps<any>){
   const [abstractBoard, setAbstractBoard] = useState<AbstractBoard>(defaultAbstractBoard)
   const [selectedPiece, setSelectedPiece] = useState<BoardPiece | undefined>(undefined)
+  const [gameUuid, setGameUuid] = useState<string | undefined>(undefined)
 
   const socketContext = useContext(SocketContext);
 
-  const movePiece = (start: Coord, end: Coord) => {
+  useEffect(() => {
+    socketContext.socket.on('pong', function (msg) {
+      console.log(msg);
+    })
 
+    socketContext.socket.on('create_game', function (msg) {
+      console.log('create')
+      const data = JSON.parse(msg['data']);
+      setGameUuid(data[0]['fields']['uuid']);
+      console.log('UUID: ' + JSON.parse(msg['data'])[0]['fields']['uuid'])
+    })
+
+    socketContext.socket.on('join_game', function (msg) {
+      console.log('join')
+      const data = JSON.parse(msg['data']);
+      setGameUuid(data[0]['fields']['uuid']);
+      console.log('UUID: ' + JSON.parse(msg['data'])[0]['fields']['uuid'])
+    })
+
+    socketContext.socket.on('make_move', function (msg) {
+      console.log(msg);
+    })
+
+    socketContext.newGame();
+    setAbstractBoard(fenToAbstractBoard('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'))
+  }, [])
+
+
+  const movePieceLocal = (start: Coord, end: Coord) => {
     if(JSON.stringify(start) === JSON.stringify(end)){
       setSelectedPiece(undefined)
       return
@@ -29,17 +57,9 @@ export default function BoardProvider({children}: ComponentProps<any>){
       sideToMove: abstractBoard.sideToMove === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE})
   }
 
-  useEffect(() => {
-    if (socketContext.socket){
-      socketContext.socket!.emit('new_game');
-      socketContext.socket!.on('creating', (msg) => {
-        const data = JSON.parse(msg);
-        console.log(data);
-      })
-      socketContext.socket.emit('ask_move', {squre: "e4"})
-      setAbstractBoard(fenToAbstractBoard('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'))
-    }
-  }, [socketContext.socket])
+  const movePiece = (start: Coord, end: Coord) => {
+    socketContext.movePiece(start, end, 1, gameUuid!)
+  }
 
   return(
       <BoardContext.Provider value = {{

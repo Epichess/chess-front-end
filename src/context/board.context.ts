@@ -9,13 +9,15 @@ export interface Board{
   selectedPiece: BoardPiece | undefined,
   selectPiece: (piece: BoardPiece | undefined) => void
   movePiece: (start: Coord, end: Coord) => void
+  gameUuid?: string
 }
 
 const defaultValues = {
   abstractBoard: defaultAbstractBoard,
   selectedPiece: undefined,
   selectPiece: () => {},
-  movePiece: () => {}
+  movePiece: () => {},
+  gameUuid: undefined
 }
 
 export const BoardContext = createContext<Board>(defaultValues)
