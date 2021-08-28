@@ -137,7 +137,7 @@ export default function LandingPage(){
   //   joinGame()
   //   history.push('/Game')
   // }
-  
+
 
   return(
       <Background>

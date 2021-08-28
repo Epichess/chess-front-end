@@ -36,7 +36,7 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
     })
 
     socketContext.newGame();
-    setAbstractBoard(fenToAbstractBoard('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'))
+    setAbstractBoard(fenToAbstractBoard('k3r3/8/4N3/8/8/8/7P/4K3 b  - 1 0'))
   }, [])
 
 
