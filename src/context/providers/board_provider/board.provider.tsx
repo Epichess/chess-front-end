@@ -9,6 +9,7 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
   const [abstractBoard, setAbstractBoard] = useState<AbstractBoard>(defaultAbstractBoard)
   const [selectedPiece, setSelectedPiece] = useState<BoardPiece | undefined>(undefined)
   const [gameUuid, setGameUuid] = useState<string | undefined>(undefined)
+  const [targetedSquares, setTargetedSquares] = useState<Coord[] | undefined>(undefined)
 
   const socketContext = useContext(SocketContext);
 
@@ -39,6 +40,10 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
       setSelectedPiece(undefined)
     })
 
+    socketContext.socket.on('ask_move', function (msg) {
+      setTargetedSquares(msg)
+    })
+
     socketContext.newGame();
     setAbstractBoard(fenToAbstractBoard('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'))
   }, [])
@@ -49,13 +54,13 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
       setSelectedPiece(undefined)
       return
     }
-    const startSqr = abstractBoard.squareTable[start.row][start.col]
-    const endSqr = abstractBoard.squareTable[end.row][end.col]
-    endSqr.hasPiece = true
-    startSqr.hasPiece = false
-    endSqr.piece = JSON.parse(JSON.stringify(startSqr.piece))
-    abstractBoard.squareTable[start.row][start.col].hasPiece = false
-    abstractBoard.squareTable[start.row][start.col].piece = undefined
+    // const startSqr = abstractBoard.squareTable[start.row][start.col]
+    // const endSqr = abstractBoard.squareTable[end.row][end.col]
+    // endSqr.hasPiece = true
+    // startSqr.hasPiece = false
+    // endSqr.piece = JSON.parse(JSON.stringify(startSqr.piece))
+    // abstractBoard.squareTable[start.row][start.col].hasPiece = false
+    // abstractBoard.squareTable[start.row][start.col].piece = undefined
     setSelectedPiece(undefined)
     setAbstractBoard({
       squareTable: [...abstractBoard.squareTable],
@@ -63,16 +68,32 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
     })
   }
 
+  const selectPiece = (piece: BoardPiece | undefined) => {
+    setSelectedPiece(piece)
+    if(piece){
+      socketContext.askMove(piece.coord, gameUuid!)
+    } else {
+      setTargetedSquares(undefined)
+    }
+  }
+
   const movePiece = (start: Coord, end: Coord) => {
+    if (JSON.stringify(start) === JSON.stringify(end)) {
+      setSelectedPiece(undefined)
+      return
+    }
     socketContext.movePiece(start, end, 1, gameUuid!)
+    setTargetedSquares(undefined)
   }
 
   return (
     <BoardContext.Provider value={{
       abstractBoard,
       selectedPiece,
-      selectPiece: setSelectedPiece,
-      movePiece
+      selectPiece,
+      movePiece,
+      targetedSquares,
+      gameUuid
     }}>
       {children}
     </BoardContext.Provider>

@@ -7,13 +7,15 @@ export interface MySocket {
   newGame: () => void;
   pong: () => void;
   movePiece: (start: Coord, end: Coord, promotionPieceType: number, uuid: string) => void;
+  askMove: (start: Coord, uuid: string) => void;
 }
 
 const defaultValues = {
   socket: socketIOClient("http://localhost:8000"),
   newGame: () => {},
   pong: () => {},
-  movePiece: () => {}
+  movePiece: () => {},
+  askMove: () => {}
 }
 
 export const SocketContext = createContext<MySocket>(defaultValues)

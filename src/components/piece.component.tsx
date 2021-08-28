@@ -29,12 +29,8 @@ export default function Piece({piece}:PieceProps){
   const onClick = () => {
     if (boardContext.selectedPiece) {
       if(boardContext.selectedPiece.abstractPiece.pieceColor === piece.abstractPiece.pieceColor){
-        console.log(boardContext.selectedPiece.abstractPiece.pieceColor)
-        console.log(piece.abstractPiece.pieceColor)
         boardContext.selectPiece(undefined)
       }else{
-        console.log(boardContext.selectedPiece.abstractPiece.pieceColor)
-        console.log(piece.abstractPiece.pieceColor)
         boardContext.movePiece(boardContext.selectedPiece.coord, piece.coord)
       }
     } else {

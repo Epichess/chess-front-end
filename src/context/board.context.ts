@@ -9,6 +9,7 @@ export interface Board{
   selectedPiece: BoardPiece | undefined,
   selectPiece: (piece: BoardPiece | undefined) => void
   movePiece: (start: Coord, end: Coord) => void
+  targetedSquares?: Coord[]
   gameUuid?: string
 }
 
@@ -17,6 +18,7 @@ const defaultValues = {
   selectedPiece: undefined,
   selectPiece: () => {},
   movePiece: () => {},
+  targetedSquares: undefined,
   gameUuid: undefined
 }
 

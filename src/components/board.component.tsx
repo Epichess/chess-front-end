@@ -5,6 +5,7 @@ import Square from "./square.component";
 import {BoardContext} from "../context/board.context";
 import logo_board from '../assets/logo_board.png'
 import logo_anarchychess from "../assets/logo_anarchychess.png";
+import {Coord} from "../types/coord.type";
 
 const BoardContainer = styled.div`
   display: flex;
@@ -76,10 +77,15 @@ export interface BoardProps{
 export default function Board(){
   const boardContext = useContext(BoardContext)
   const [abstractBoard, setAbstractBoard] = useState<AbstractBoard>(boardContext.abstractBoard)
+  const [targetedSquares, setTargetedSquares] = useState<Coord[] | undefined>(boardContext.targetedSquares)
 
   useEffect(() => {
     setAbstractBoard(boardContext.abstractBoard)
   }, [boardContext.abstractBoard])
+
+  useEffect(() => {
+    setTargetedSquares(boardContext.targetedSquares)
+  }, [boardContext.targetedSquares])
 
   const isSquareSelected = (row: number, col: number): boolean => {
     if (boardContext.selectedPiece === undefined){
@@ -87,6 +93,16 @@ export default function Board(){
     }
 
     return(row === boardContext.selectedPiece.coord.row && col === boardContext.selectedPiece.coord.col)
+  }
+
+  const isSquareTargeted = (row: number, col: number): boolean => {
+    if(targetedSquares){
+      return targetedSquares.some((coord) => {
+        return coord.row === row && coord.col === col
+      })
+    }else {
+      return false
+    }
   }
 
   return(
@@ -129,7 +145,7 @@ export default function Board(){
                                 col: colIndex}}
                               isLight={(rowIndex + colIndex) % 2 === 1}
                               isSelected={isSquareSelected(rowIndex, colIndex)}
-                              isTargeted={false}
+                              isTargeted={isSquareTargeted(rowIndex, colIndex)}
                               containsPiece={square.hasPiece}
                               piece={square.piece}
                           />

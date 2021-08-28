@@ -27,12 +27,20 @@ export default function SocketProvider({children}: ComponentProps<any>){
     })
   }
 
+  function askMove(start: Coord, uuid: string){
+    mySocket.emit('ask_move', {
+      uuid: uuid,
+      start: start
+    })
+  }
+
   return(
       <SocketContext.Provider value={{
         socket: mySocket,
         pong,
         newGame,
-        movePiece
+        movePiece,
+        askMove,
       }}>
         {children}
       </SocketContext.Provider>
