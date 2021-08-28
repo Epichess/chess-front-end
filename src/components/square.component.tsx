@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {SyntheticEvent, useContext, useEffect} from "react";
 import styled from "styled-components";
 import {AbstractPiece} from "../types/piece.type";
 import Piece from "./piece.component";
@@ -11,7 +11,7 @@ export interface SquareProps{
   isTargeted: boolean,
   isSelected: boolean,
   containsPiece: boolean,
-  piece?: AbstractPiece
+  piece?: AbstractPiece,
 }
 
 const Cell = styled.div<{isSelected: boolean, isLight: boolean}>`
@@ -32,7 +32,6 @@ const TargetCell = styled.span<{containsPiece: boolean, isTargeted: boolean}>`
 `
 
 export default function Square({coord, isLight, isTargeted, isSelected, containsPiece, piece}: SquareProps){
-
   const onClick = () => {
     if(boardContext.selectedPiece){
       boardContext.movePiece(boardContext.selectedPiece.coord, coord)
@@ -42,7 +41,6 @@ export default function Square({coord, isLight, isTargeted, isSelected, contains
   const boardContext = useContext(BoardContext)
   return(
       <Cell
-
           isLight = {isLight}
           isSelected = {isSelected}
       >
