@@ -8,6 +8,15 @@ import logo_anarchychess from '../assets/logo_anarchychess.png'
 import { useHistory } from 'react-router-dom'
 // import { createGame, joinGame } from '../api/board.api';
 import { player } from "../audio/audio";
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
+import { TransitionProps } from '@material-ui/core/transitions';
+import { makeStyles } from '@material-ui/core/styles';
 
 const BottomBanner = styled.div`
   display: flex;
@@ -120,17 +129,26 @@ const SignUpText = styled.div`
   }
 `
 
+const Transition = React.forwardRef(function Transition(
+    props: TransitionProps & { children?: React.ReactElement<any, any> },
+    ref: React.Ref<unknown>,
+) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
+
+
 export default function LandingPage(){
   const history = useHistory();
 
-  // const handlePlayBtnClick = () => {
-  //   console.log("Play Now")
-  //   player.playButton();
-  //   player.pauseIntro();
-  //   createGame()
-  //   history.push('/Game')
-  // }
-  //
+  const handlePlayBtnClick = () => {
+     console.log("Play Now")
+     player.playButton();
+     player.pauseIntro();
+     // createGame()
+     history.push('/Game')
+   }
+
   // const handleJoinBtnClick = () => {
   //   console.log("Join Now")
   //   player.playButton();
@@ -138,6 +156,49 @@ export default function LandingPage(){
   //   history.push('/Game')
   // }
   
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const [openSignIn, setOpenSignIn] = React.useState(false);
+
+    const handleClickOpenSignIn = () => {
+        setOpenSignIn(true);
+    };
+
+    const handleCloseSignIn = () => {
+        setOpenSignIn(false);
+    };
+
+    const [openSignUp, setOpenSignUp] = React.useState(false);
+
+    const handleClickOpenSignUp = () => {
+        setOpenSignUp(true);
+    };
+
+    const handleCloseSignUp = () => {
+        setOpenSignUp(false);
+    };
+
+    const Options = styled(DialogContentText)`
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      
+`;
+
+    const StyledTitle = styled(DialogTitle)`
+    display: flex;
+    justify-content: center;
+    font-weight: bold !important;
+    `;
 
   return(
       <Background>
@@ -154,8 +215,113 @@ export default function LandingPage(){
             <Rectangle>
                 <img src={logo_anarchychess} style={{height: '100%'}} alt='anarchychess_logo' />
                 <TextRectangle>
-                    <PlayText onClick={() => {}}>PLAY</PlayText>
-                    <SignUpText>PATZ UP</SignUpText>
+                    <div>
+
+                        <Dialog
+                            open={open}
+                            TransitionComponent={Transition}
+                            keepMounted
+                            onClose={handleClose}
+                            aria-labelledby="alert-dialog-slide-title"
+                            aria-describedby="alert-dialog-slide-description"
+                        >
+                            <StyledTitle id="alert-dialog-slide-title">{"Let's play"}</StyledTitle>
+                            <DialogContent>
+                                <Options id="alert-dialog-slide-description">
+                                    Already part of the patzers community?
+                                    <Button onClick={() => {
+                                        handleClose();
+                                        handleClickOpenSignIn();
+                                    }} color="primary" >
+                                         Sign in
+                                    </Button>
+                                    <br/>
+                                    Or, play as a guest.
+                                    <Button onClick={handlePlayBtnClick} color="primary">
+                                         Enter
+                                    </Button>
+                                </Options>
+                            </DialogContent>
+                        </Dialog>
+                    </div>
+                    <PlayText onClick={handleClickOpen}>PLAY</PlayText>
+                    <div>
+                        <Dialog open={openSignIn} onClose={handleCloseSignIn} aria-labelledby="form-dialog-title">
+                            <StyledTitle id="form-dialog-title">Happy to see you</StyledTitle>
+                            <DialogContent>
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="name"
+                                    label="Email Address"
+                                    type="email"
+                                    fullWidth
+                                />
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="password"
+                                    label="Password"
+                                    type="password"
+                                    fullWidth
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleCloseSignIn} color="primary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={handlePlayBtnClick} color="primary">
+                                    Login
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </div>
+                    <div>
+                        <Dialog open={openSignUp} onClose={handleCloseSignUp} aria-labelledby="form-dialog-title">
+                            <StyledTitle id="form-dialog-title">Join our patzers community</StyledTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    To join our patzers community, you agree to ... .
+                                </DialogContentText>
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="name"
+                                    label="Patzer's name"
+                                    type="name"
+                                    fullWidth
+                                />
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="name"
+                                    label="Email Address"
+                                    type="email"
+                                    fullWidth
+                                />
+                                <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="password"
+                                    label="Password"
+                                    type="password"
+                                    fullWidth
+                                />
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={handleCloseSignUp} color="primary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={() => {
+                                    handleCloseSignUp();
+                                    handleClickOpenSignIn();
+                                }} color="primary">
+                                    Submit
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </div>
+                    <SignUpText onClick={handleClickOpenSignUp}>PATZ UP</SignUpText>
                 </TextRectangle>
             </Rectangle>
         </BottomBanner>

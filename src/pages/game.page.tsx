@@ -11,7 +11,13 @@ import logo_anarchychess from "../assets/logo_anarchychess.png";
 import bg from "../assets/main_lesslesshardcore.gif";
 import styled from "styled-components";
 import InputBase from '@material-ui/core/InputBase';
-
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import StepContent from '@material-ui/core/StepContent';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 const options = [
   '5 min', '10 min', '30 min'
@@ -82,48 +88,16 @@ const Main = styled.div`
   justify-content: center;
   padding-top: 20px;
 `
+
 const Rectangle = styled.div`
-  background-color: white;
-  mix-blend-mode: normal;
   opacity: 0.8;
-  box-shadow: 5px 5px 5px grey;
   width: 15vw;
-  height: 8vw;
   display: flex;
   flex-direction: row;
   margin-left: 4vw;
+  
 `
 
-const TextRectangle = styled.div`
-  display: flex;
-  flex-direction: column;
-  font-family: 'IBM Plex Sans';
-  font-style: normal;
-  font-weight: bold;
-  width: 100%;
-  align-items: center;
-  justify-content: space-evenly;
-`
-
-const TimeText = styled.div`
-  font-size: 1vw;
-  box-sizing: border-box;
-  line-height: 1vw;
-  color: #1E2439;
-  background-color: #EBEBEB;
-  border: 1px solid #E2DCDC;
-  box-sizing: border-box;
-  border-radius: 3px;
-  height: 2.5vw;
-  width: 60%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:hover {
-    cursor: pointer; 
-    font-size: 1.2vw;
-  }
-`
 
 const PlayText = styled.div`
   box-sizing: border-box;
@@ -149,40 +123,102 @@ const PlayText = styled.div`
 `
 
 const BootstrapInput = withStyles((theme: Theme) =>
-  createStyles({
-    input: {
-      boxSizing: 'border-box',
-      borderRadius: '3px',
-      backgroundColor: '#EBEBEB',
-      border: '1px solid #E2DCDC',
-      height: '2.8vw',
-      width: '8.2vw',
-      transition: theme.transitions.create(['border-color', 'box-shadow']),
-      fontStyle: 'normal',
-      fontWeight: 'bold',
-      fontSize: '1.2vw',
-      color: '#1E2439',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      fontFamily: 'IBM Plex Sans',
-      '&:focus': {
-        borderRadius: 4,
-        borderColor: '#80bdff',
-        boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-      },
-    },
-  }),
+    createStyles({
+        input: {
+            boxSizing: 'border-box',
+            borderRadius: '3px',
+            backgroundColor: '#EBEBEB',
+            border: '1px solid #E2DCDC',
+            height: '2.8vw',
+            width: '8.2vw',
+            transition: theme.transitions.create(['border-color', 'box-shadow']),
+            fontStyle: 'normal',
+            fontWeight: 'bold',
+            fontSize: '0.8vw',
+            color: '#1E2439',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontFamily: 'IBM Plex Sans',
+            '&:focus': {
+                borderRadius: 4,
+                borderColor: '#80bdff',
+                boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+            },
+        },
+    }),
 )(InputBase);
 
+
 const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    margin: {
-      margin: theme.spacing(1),
-    },
-  }),
+    createStyles({
+        margin: {
+            margin: theme.spacing(1),
+        },
+        root: {
+            width: '100%',
+        },
+        button: {
+            marginTop: theme.spacing(1),
+            marginRight: theme.spacing(1),
+
+            boxShadow: '5px 5px 5px grey',
+        },
+        actionsContainer: {
+            marginBottom: theme.spacing(2),
+
+
+        },
+        resetContainer: {
+            padding: theme.spacing(3),
+        },
+    }),
 );
 
+function getSteps() {
+    return ['Game duration', 'Play against...', 'Anarchy Chess Rules'];
+}
+
+function getStepContent(step: number) {
+    switch (step) {
+        case 0:
+            return (
+                <FormControl >
+                <InputLabel id="demo-customized-select-label">Duration</InputLabel>
+                <Select
+                    labelId="demo-customized-select-label"
+                    id="demo-customized-select"
+                    input={<BootstrapInput />}
+                >
+                    <MenuItem value={5}>5 min</MenuItem>
+                    <MenuItem value={10}>10 min</MenuItem>
+                    <MenuItem value={30}>30 min</MenuItem>
+                </Select>
+            </FormControl>
+            );
+        case 1:
+            return (
+                <FormControl >
+                    <InputLabel id="demo-customized-select-label">Duration</InputLabel>
+                    <Select
+                        labelId="demo-customized-select-label"
+                        id="demo-customized-select"
+                        input={<BootstrapInput />}
+                    >
+                        <MenuItem value={5}>AI</MenuItem>
+                        <MenuItem value={10}>Friend</MenuItem>
+                        <MenuItem value={30}>User</MenuItem>
+                    </Select>
+                </FormControl>
+            );
+        case 2:
+            return `You are about to play Anarchy Chess. This is no random game. 
+            En-passant are mandatory. 
+            If you don't know what it is, you should not be here.`;
+        default:
+            return 'Unknown step';
+    }
+}
 
 const GamePage = () => {
   const classes = useStyles();
@@ -190,6 +226,21 @@ const GamePage = () => {
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setAge(event.target.value as string);
   };
+
+    const [activeStep, setActiveStep] = React.useState(0);
+    const steps = getSteps();
+
+    const handleNext = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
+
+    const handleReset = () => {
+        setActiveStep(0);
+    };
 
   return (
     <SocketProvider>
@@ -215,29 +266,52 @@ const GamePage = () => {
             <Main>
               <Board />
 
-              <Rectangle>
-                <TextRectangle>
-                  <FormControl className={classes.margin}>
-                    <InputLabel id="demo-customized-select-label">Duration</InputLabel>
-                    <Select
-                      labelId="demo-customized-select-label"
-                      id="demo-customized-select"
-                      value={age}
-                      onChange={handleChange}
-                      input={<BootstrapInput />}
-                    >
-                      <MenuItem value={5}>5 min</MenuItem>
-                      <MenuItem value={10}>10 min</MenuItem>
-                      <MenuItem value={30}>30 min</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <PlayText onClick={() => {}}>PLAY</PlayText>
-                </TextRectangle>
-              </Rectangle>
-            </Main>
-          </Background>
-        </div>
-      </BoardProvider>
+          <Rectangle>
+              <div className={classes.root}>
+                  <Stepper activeStep={activeStep} orientation="vertical">
+                      {steps.map((label, index) => (
+                          <Step key={label}>
+                              <StepLabel>{label}</StepLabel>
+                              <StepContent>
+                                  <Typography>{getStepContent(index)}</Typography>
+                                  <div className={classes.actionsContainer}>
+                                      <div>
+                                          <Button
+                                              disabled={activeStep === 0}
+                                              onClick={handleBack}
+                                              className={classes.button}
+                                          >
+                                              Back
+                                          </Button>
+                                          <Button
+                                              variant="contained"
+                                              color="primary"
+                                              onClick={handleNext}
+                                              className={classes.button}
+                                          >
+                                              {activeStep === steps.length - 1 ? 'Play' : 'Next'}
+                                          </Button>
+                                      </div>
+                                  </div>
+                              </StepContent>
+                          </Step>
+                      ))}
+                  </Stepper>
+                  {activeStep === steps.length && (
+                      <Paper square elevation={0} className={classes.resetContainer}>
+                          <Typography>All set! Enjoy the game.</Typography>
+                          <Button onClick={handleReset} className={classes.button}>
+                              Reset
+                          </Button>
+                      </Paper>
+                  )}
+              </div>
+
+          </Rectangle>
+          </Main>
+      </Background>
+      </div>
+    </BoardProvider>
     </SocketProvider>
   );
 };

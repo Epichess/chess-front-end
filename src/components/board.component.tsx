@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {Component, useContext, useEffect, useState} from "react";
 import styled from "styled-components";
 import {AbstractBoard} from "../types/board.type";
 import Square from "./square.component";
@@ -68,16 +68,13 @@ const Logo = styled.img`
 
 `
 
-export interface BoardProps{
-}
-
-
-
 export default function Board(){
   const boardContext = useContext(BoardContext)
   const [abstractBoard, setAbstractBoard] = useState<AbstractBoard>(boardContext.abstractBoard)
 
-  useEffect(() => {
+    const [showMenu, setShowMenu] = useState(false)
+
+    useEffect(() => {
     setAbstractBoard(boardContext.abstractBoard)
   }, [boardContext.abstractBoard])
 
@@ -89,7 +86,8 @@ export default function Board(){
     return(row === boardContext.selectedPiece.coord.row && col === boardContext.selectedPiece.coord.col)
   }
 
-  return(
+
+    return(
       <Rectangle>
           <div style={{ display: 'flex', flexDirection: 'column', marginTop: '32vw'}}>
               <div style={{ display: 'flex', flexDirection: 'row'}}>
@@ -134,8 +132,11 @@ export default function Board(){
                               piece={square.piece}
                           />
                       )}</BoardRow>) }
+
                 </BoardContainer>
+
               </div>
+
             <Columns>
               <CoordinatesText>
                   a
