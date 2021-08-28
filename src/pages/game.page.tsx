@@ -18,6 +18,8 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
 
 const options = [
   '5 min', '10 min', '30 min'
@@ -71,7 +73,11 @@ const TextDiv = styled.div`
   font-style: normal;
   font-weight: bold;
 `
-
+const LeftSide = styled.div`
+    display: flex;
+  flex-direction: column;
+  align-content: space-between;
+`
 const AnarchyLogo = styled.img`
   position: absolute;
   top: -50%;
@@ -80,6 +86,17 @@ const AnarchyLogo = styled.img`
   margin-left: 20vw;
   border: 0.3vw solid #FFFFFF;
   box-sizing: border-box;
+`
+
+const ReverseButtonDiv = styled.div`
+  opacity: 0.8;
+  width: 18vw;
+  display: flex;
+  flex-direction: row;
+  margin-left: 4vw;
+  margin-top: 18vw; 
+  
+
 `
 
 const Main = styled.div`
@@ -266,6 +283,7 @@ const GamePage = () => {
             <Main>
               <Board />
 
+                <LeftSide>
           <Rectangle>
               <div className={classes.root}>
                   <Stepper activeStep={activeStep} orientation="vertical">
@@ -308,6 +326,17 @@ const GamePage = () => {
               </div>
 
           </Rectangle>
+                    <ReverseButtonDiv>
+                    <Button
+                        variant="contained"
+                        color="default"
+                        className={classes.button}
+                        startIcon={<FlipCameraAndroidIcon color="primary"  />}
+                    >
+                        Reverse Board
+                    </Button>
+                    </ReverseButtonDiv>
+                </LeftSide>
           </Main>
       </Background>
       </div>
