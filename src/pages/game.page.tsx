@@ -93,10 +93,8 @@ const ReverseButtonDiv = styled.div`
   width: 18vw;
   display: flex;
   flex-direction: row;
-  margin-left: 4vw;
+  margin-left: 7vw;
   margin-top: 18vw; 
-  
-
 `
 
 const Main = styled.div`
