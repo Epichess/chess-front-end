@@ -34,6 +34,7 @@ const Rectangle = styled.div`
   width: 40vw;
   height: 37vw;
   box-shadow: 5px 5px 5px grey;
+  transform: rotate(180);
 `
 
 const Lines = styled.div`

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Board from "../components/board.component";
 import { createStyles, makeStyles, withStyles, Theme } from '@material-ui/core/styles';
 import BoardProvider from "../context/providers/board_provider/board.provider";
@@ -20,6 +20,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
+import {BoardContext} from "../context/board.context";
 
 const options = [
   '5 min', '10 min', '30 min'
@@ -256,6 +257,8 @@ const GamePage = () => {
     const handleReset = () => {
         setActiveStep(0);
     };
+
+    const boardContext = useContext(BoardContext);
 
   return (
     <SocketProvider>

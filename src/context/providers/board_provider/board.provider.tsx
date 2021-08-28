@@ -10,6 +10,7 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
   const [selectedPiece, setSelectedPiece] = useState<BoardPiece | undefined>(undefined)
   const [gameUuid, setGameUuid] = useState<string | undefined>(undefined)
   const [targetedSquares, setTargetedSquares] = useState<Coord[] | undefined>(undefined)
+  const [blackPOV, setBlackPOV] = useState<boolean>(false);
 
   const socketContext = useContext(SocketContext);
 
@@ -49,25 +50,6 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
   }, [])
 
 
-  const movePieceLocal = (start: Coord, end: Coord) => {
-    if (JSON.stringify(start) === JSON.stringify(end)) {
-      setSelectedPiece(undefined)
-      return
-    }
-    // const startSqr = abstractBoard.squareTable[start.row][start.col]
-    // const endSqr = abstractBoard.squareTable[end.row][end.col]
-    // endSqr.hasPiece = true
-    // startSqr.hasPiece = false
-    // endSqr.piece = JSON.parse(JSON.stringify(startSqr.piece))
-    // abstractBoard.squareTable[start.row][start.col].hasPiece = false
-    // abstractBoard.squareTable[start.row][start.col].piece = undefined
-    setSelectedPiece(undefined)
-    setAbstractBoard({
-      squareTable: [...abstractBoard.squareTable],
-      sideToMove: abstractBoard.sideToMove === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE
-    })
-  }
-
   const selectPiece = (piece: BoardPiece | undefined) => {
     setSelectedPiece(piece)
     if(piece){
@@ -92,6 +74,8 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
       selectedPiece,
       selectPiece,
       movePiece,
+      blackPOV,
+      setBlackPOV,
       targetedSquares,
       gameUuid
     }}>
