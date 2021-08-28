@@ -33,6 +33,10 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
 
     socketContext.socket.on('make_move', function (msg) {
       console.log(msg);
+      if (msg['isMoveValid']) {
+        setAbstractBoard(fenToAbstractBoard(msg['fen']))
+      }
+      setSelectedPiece(undefined)
     })
 
     socketContext.newGame();
