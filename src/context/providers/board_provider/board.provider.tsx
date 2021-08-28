@@ -41,7 +41,7 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
 
 
   const movePieceLocal = (start: Coord, end: Coord) => {
-    if(JSON.stringify(start) === JSON.stringify(end)){
+    if (JSON.stringify(start) === JSON.stringify(end)) {
       setSelectedPiece(undefined)
       return
     }
@@ -57,8 +57,6 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
       squareTable: [...abstractBoard.squareTable],
       sideToMove: abstractBoard.sideToMove === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE
     })
-    if (socketContext.socket !== undefined)
-      socketContext.socket.emit('make_move', { 'uuid': '6cca354c-8c0a-4b5b-81dd-f0bac33027f6', 'start': [start.row, start.col], 'end': [end.row, end.col] })
   }
 
   const movePiece = (start: Coord, end: Coord) => {
