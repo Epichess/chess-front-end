@@ -1,9 +1,8 @@
 import React, {useContext} from 'react';
 import Board from "../components/board.component";
 import { createStyles, makeStyles, withStyles, Theme } from '@material-ui/core/styles';
-import BoardProvider from "../context/providers/board_provider/board.provider";
+import GamePageWrapper from "./game.page.wrapper";
 import { Grid, FormControl, InputLabel, MenuItem, Select, FormHelperText } from "@material-ui/core";
-import SocketProvider from "../context/providers/socket_provider/socket.io.provider";
 import { player } from "../audio/audio";
 import banner from "../assets/anarchybanner.jpg";
 import anarchy_logo from "../assets/logo.png";
@@ -261,8 +260,6 @@ const GamePage = () => {
     const boardContext = useContext(BoardContext);
 
   return (
-    <SocketProvider>
-      <BoardProvider>
         <div style={{
           backgroundColor: '#E9E3E3',
           width: '100vw',
@@ -328,21 +325,20 @@ const GamePage = () => {
 
           </Rectangle>
                     <ReverseButtonDiv>
-                    <Button
-                        variant="contained"
-                        color="default"
-                        className={classes.button}
-                        startIcon={<FlipCameraAndroidIcon color="primary"  />}
-                    >
-                        Reverse Board
-                    </Button>
+                      <Button
+                          onClick = {() => {boardContext.setBlackPOV(!boardContext.blackPOV)}}
+                          variant="contained"
+                          color="default"
+                          className={classes.button}
+                          startIcon={<FlipCameraAndroidIcon color="primary"  />}
+                      >
+                          Reverse Board
+                      </Button>
                     </ReverseButtonDiv>
                 </LeftSide>
           </Main>
       </Background>
       </div>
-    </BoardProvider>
-    </SocketProvider>
   );
 };
 

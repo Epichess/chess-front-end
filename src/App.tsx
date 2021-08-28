@@ -6,7 +6,7 @@ import {BrowserRouter, Switch, Route} from "react-router-dom";
 import LandingPage from "./pages/landing.page";
 import TestPage from "./pages/test.page";
 import Provider from "./context/providers/main.provider";
-import GamePage from "./pages/game.page";
+import GamePageWrapper from "./pages/game.page.wrapper";
 
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
         <BrowserRouter>
           <Switch>
             <Route path = "/game">
-              <GamePage/>
+              <GamePageWrapper/>
             </Route>
             <Route path = "/test">
               <TestPage/>

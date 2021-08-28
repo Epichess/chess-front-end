@@ -10,15 +10,17 @@ export interface SquareProps{
   isLight: boolean,
   isTargeted: boolean,
   isSelected: boolean,
+  blackPOV: boolean,
   containsPiece: boolean,
   piece?: AbstractPiece,
 }
 
-const Cell = styled.div<{isSelected: boolean, isLight: boolean}>`
+const Cell = styled.div<{isSelected: boolean, isLight: boolean, blackPOV: boolean}>`
     flex: 1;
     background-color: ${props => props.isLight? '#4b5061' : '#EBEBEB'};
     background-color: ${props => props.isSelected && '#90d147'};
     position: relative;
+  -webkit-transform: ${props => props.blackPOV && 'rotateX(180deg)'};
   `
 
 const TargetCell = styled.span<{containsPiece: boolean, isTargeted: boolean}>`
@@ -31,7 +33,7 @@ const TargetCell = styled.span<{containsPiece: boolean, isTargeted: boolean}>`
   position: absolute;
 `
 
-export default function Square({coord, isLight, isTargeted, isSelected, containsPiece, piece}: SquareProps){
+export default function Square({coord, isLight, isTargeted, isSelected, containsPiece, piece, blackPOV}: SquareProps){
   const onClick = () => {
     if(boardContext.selectedPiece){
       boardContext.movePiece(boardContext.selectedPiece.coord, coord)
@@ -43,6 +45,7 @@ export default function Square({coord, isLight, isTargeted, isSelected, contains
       <Cell
           isLight = {isLight}
           isSelected = {isSelected}
+          blackPOV = {blackPOV}
       >
         <TargetCell containsPiece={piece !== undefined} onClick={onClick} isTargeted={isTargeted}>
           {piece !== undefined && <Piece

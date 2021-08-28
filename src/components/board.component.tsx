@@ -7,7 +7,7 @@ import logo_board from '../assets/logo_board.png'
 import logo_anarchychess from "../assets/logo_anarchychess.png";
 import {Coord} from "../types/coord.type";
 
-const BoardContainer = styled.div`
+const BoardContainer = styled.div<{blackPOV: boolean}>`
   display: flex;
   flex-direction: column;
   width: 32vw;
@@ -15,6 +15,7 @@ const BoardContainer = styled.div`
   mix-blend-mode: normal;
   opacity: 0.8;
   box-shadow: 5px 5px 5px grey;
+  -webkit-transform: ${props => props.blackPOV && 'rotateX(180deg)'};
 `
 
 const BoardRow = styled.div`
@@ -134,7 +135,8 @@ export default function Board(){
                         1
                     </CoordinatesText>
                 </Lines>
-                <BoardContainer>
+                <BoardContainer
+                    blackPOV = {boardContext.blackPOV}>
                   {abstractBoard.squareTable.map((boardRow, rowIndex) =>
                       <BoardRow key={`${rowIndex}`}>{boardRow.map((square, colIndex) =>
                           <Square
@@ -146,6 +148,7 @@ export default function Board(){
                               isTargeted={isSquareTargeted(rowIndex, colIndex)}
                               containsPiece={square.hasPiece}
                               piece={square.piece}
+                              blackPOV = {boardContext.blackPOV}
                           />
                       )}</BoardRow>) }
 
