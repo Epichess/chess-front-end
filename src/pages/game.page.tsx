@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import Board from "../components/board.component";
 import { createStyles, makeStyles, withStyles, Theme } from '@material-ui/core/styles';
 import GamePageWrapper from "./game.page.wrapper";
-import { Grid, FormControl, InputLabel, MenuItem, Select, FormHelperText } from "@material-ui/core";
+import { Grid, FormControl, InputLabel, MenuItem, Select, FormHelperText, TextField } from "@material-ui/core";
 import { player } from "../audio/audio";
 import banner from "../assets/anarchybanner.jpg";
 import anarchy_logo from "../assets/logo.png";
@@ -252,14 +252,23 @@ const GamePage = () => {
     setAge(event.target.value as string);
   };
     const [open, setOpen] = React.useState(false);
+    const [openModal, setOpenModal] = React.useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
     };
 
+    const handleClickOpenModal = () => {
+      setOpenModal(true);
+  };
+
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleCloseModal = () => {
+      setOpenModal(false);
+  };
 
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
@@ -384,6 +393,43 @@ const GamePage = () => {
                                 Try again
                             </Button>
                         </DialogActions>
+                    </StyledDialog>
+
+                    {/* MODAL */}
+
+                    {/* <Button variant="outlined" color="primary" onClick={handleClickOpenModal}> Friend Modal </Button>  */}
+
+                    <StyledDialog 
+                        open={openModal}
+                        onClose={handleCloseModal}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <StyledDialogTitle id="alert-dialog-title">Wanna play with friends?</StyledDialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                This is your uuid: "show uuid"
+                                {/* socket get uuid */}
+                            </DialogContentText>
+                          <TextField
+                                    autoFocus
+                                    margin="dense"
+                                    id="uuid"
+                                    label="Insert your friend's uuid"
+                                    type="uuid"
+                                    fullWidth
+                                />
+                        </DialogContent>
+                        <DialogActions>
+                                <Button onClick={handleCloseModal} color="primary">
+                                    Cancel
+                                </Button>
+                                <Button onClick={() => {  //socket join
+                                    handleCloseModal();
+                                }} color="primary">
+                                    Join
+                                </Button>
+                            </DialogActions>
                     </StyledDialog>
                 </LeftSide>
           </Main>
