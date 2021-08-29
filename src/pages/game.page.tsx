@@ -408,8 +408,7 @@ const GamePage = () => {
                         <StyledDialogTitle id="alert-dialog-title">Wanna play with friends?</StyledDialogTitle>
                         <DialogContent>
                             <DialogContentText>
-                                This is your uuid: "show uuid"
-                                {/* socket get uuid */}
+                                This is your uuid: {boardContext.gameUuid}
                             </DialogContentText>
                           <TextField
                                     autoFocus
@@ -426,6 +425,7 @@ const GamePage = () => {
                                 </Button>
                                 <Button onClick={() => {  //socket join
                                     handleCloseModal();
+
                                 }} color="primary">
                                     Join
                                 </Button>
