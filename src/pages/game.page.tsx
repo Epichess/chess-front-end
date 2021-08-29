@@ -20,6 +20,12 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
 import {BoardContext} from "../context/board.context";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 const options = [
   '5 min', '10 min', '30 min'
@@ -112,6 +118,10 @@ const Rectangle = styled.div`
   margin-left: 4vw;
   
 `
+
+const StyledDialog = styled(Dialog)`
+    background-color: red,
+    `
 
 
 const PlayText = styled.div`
@@ -241,6 +251,15 @@ const GamePage = () => {
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setAge(event.target.value as string);
   };
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     const [activeStep, setActiveStep] = React.useState(0);
     const steps = getSteps();
@@ -258,6 +277,16 @@ const GamePage = () => {
     };
 
     const boardContext = useContext(BoardContext);
+
+    const StyledDialog = styled(Dialog)`
+    background-color: red,
+    `
+
+    const StyledDialogTitle = styled(DialogTitle)`
+    display: flex;
+    justify-content: center;
+    font-weight: bold !important;
+    `
 
   return (
         <div style={{
@@ -329,12 +358,33 @@ const GamePage = () => {
                           onClick = {() => {boardContext.setBlackPOV(!boardContext.blackPOV)}}
                           variant="contained"
                           color="default"
-                          className={classes.button}
                           startIcon={<FlipCameraAndroidIcon color="primary"  />}
                       >
                           Reverse Board
                       </Button>
                     </ReverseButtonDiv>
+{/*                    <Button variant="outlined" color="primary" onClick={handleClickOpen}
+                    >
+                        Echec et Mat
+                    </Button>*/}
+
+                    <StyledDialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <StyledDialogTitle id="alert-dialog-title">CHECKMATE - {"WHITE"} WINS</StyledDialogTitle>
+                        <DialogContent>
+                                <iframe src="https://giphy.com/embed/VqTjKLGbaBI3JBdIIN" width="480" height="343"
+                                        frameBorder="0" className="giphy-embed" allowFullScreen></iframe>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose} color="primary" autoFocus>
+                                Try again
+                            </Button>
+                        </DialogActions>
+                    </StyledDialog>
                 </LeftSide>
           </Main>
       </Background>

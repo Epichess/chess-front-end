@@ -18,6 +18,7 @@ import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions';
 import { makeStyles } from '@material-ui/core/styles';
 
+
 const BottomBanner = styled.div`
   display: flex;
   flex-direction: row;
