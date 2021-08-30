@@ -20,6 +20,7 @@ export default function SocketProvider({children}: ComponentProps<any>){
   function movePiece(start: Coord, end: Coord, promotionPieceType: number, uuid: string){
     mySocket.emit('make_move', {
       uuid: uuid,
+      promotionType: promotionPieceType,
       start: {row: start.row,
                col: start.col},
       end: {row: end.row,

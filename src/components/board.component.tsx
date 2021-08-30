@@ -1,11 +1,11 @@
-import React, {Component, useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import styled from "styled-components";
 import {AbstractBoard} from "../types/board.type";
 import Square from "./square.component";
 import {BoardContext} from "../context/board.context";
-import logo_board from '../assets/logo_board.png'
 import logo_anarchychess from "../assets/logo_anarchychess.png";
 import {Coord} from "../types/coord.type";
+import {AbstractPiece, PieceColor, PieceKind} from "../types/piece.type";
 
 const BoardContainer = styled.div<{blackPOV: boolean}>`
   display: flex;
@@ -104,6 +104,18 @@ export default function Board(){
     }
   }
 
+  const isSquareChecked = (piece?: AbstractPiece) => {
+    if(piece){
+      if(piece.pieceColor === PieceColor.BLACK && piece.pieceKind === PieceKind.KING && boardContext.isBlackKingChecked){
+        return true
+      }
+      if(piece.pieceColor === PieceColor.WHITE && piece.pieceKind === PieceKind.KING && boardContext.isWhiteKingChecked){
+        return true
+      }
+    }
+    return false;
+  }
+
     return(
       <Rectangle>
           <div style={{ display: 'flex', flexDirection: 'column', marginTop: '32vw'}}>
@@ -146,6 +158,7 @@ export default function Board(){
                               isLight={(rowIndex + colIndex) % 2 === 1}
                               isSelected={isSquareSelected(rowIndex, colIndex)}
                               isTargeted={isSquareTargeted(rowIndex, colIndex)}
+                              isChecked={isSquareChecked(square.piece)}
                               containsPiece={square.hasPiece}
                               piece={square.piece}
                               blackPOV = {boardContext.blackPOV}

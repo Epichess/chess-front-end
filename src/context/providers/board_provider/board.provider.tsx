@@ -1,9 +1,9 @@
-import { ComponentProps, useContext, useEffect, useState } from "react";
-import { BoardContext } from "../../board.context";
-import { AbstractBoard, defaultAbstractBoard, fenToAbstractBoard } from "../../../types/board.type";
-import { Coord } from "../../../types/coord.type";
-import { BoardPiece, PieceColor } from "../../../types/piece.type";
-import { SocketContext } from "../../socket.io.context";
+import {ComponentProps, useContext, useEffect, useState} from "react";
+import {BoardContext} from "../../board.context";
+import {AbstractBoard, defaultAbstractBoard, fenToAbstractBoard} from "../../../types/board.type";
+import {Coord} from "../../../types/coord.type";
+import {BoardPiece, PieceKind} from "../../../types/piece.type";
+import {SocketContext} from "../../socket.io.context";
 
 export default function BoardProvider({ children }: ComponentProps<any>) {
   const [abstractBoard, setAbstractBoard] = useState<AbstractBoard>(defaultAbstractBoard)
@@ -11,6 +11,8 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
   const [gameUuid, setGameUuid] = useState<string | undefined>(undefined)
   const [targetedSquares, setTargetedSquares] = useState<Coord[] | undefined>(undefined)
   const [blackPOV, setBlackPOV] = useState<boolean>(false);
+  const [isWhiteKingChecked, setIsWhiteKingChecked] = useState<boolean>(false);
+  const [isBlackKingChecked, setIsBlackKingChecked] = useState<boolean>(false);
 
   const socketContext = useContext(SocketContext);
 
@@ -37,6 +39,8 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
       console.log(msg);
       if (msg['isMoveValid']) {
         setAbstractBoard(fenToAbstractBoard(msg['fen']))
+        setIsBlackKingChecked(msg.isKingCheck.b)
+        setIsWhiteKingChecked(msg.isKingCheck.w)
       }
       setSelectedPiece(undefined)
     })
@@ -64,7 +68,12 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
       setSelectedPiece(undefined)
       return
     }
-    socketContext.movePiece(start, end, 1, gameUuid!)
+    if (selectedPiece){
+      if (selectedPiece.abstractPiece.pieceKind === PieceKind.PAWN && end.row === 0){
+
+      }
+    }
+    socketContext.movePiece(start, end, 6, gameUuid!)
     setTargetedSquares(undefined)
   }
 
@@ -77,6 +86,8 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
       blackPOV,
       setBlackPOV,
       targetedSquares,
+      isWhiteKingChecked,
+      isBlackKingChecked,
       gameUuid
     }}>
       {children}

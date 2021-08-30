@@ -12,6 +12,8 @@ export interface Board{
   blackPOV: boolean
   setBlackPOV: (pov: boolean) => void
   targetedSquares?: Coord[]
+  isWhiteKingChecked: boolean
+  isBlackKingChecked: boolean
   gameUuid?: string
 }
 
@@ -23,6 +25,8 @@ const defaultValues = {
   blackPOV: false,
   setBlackPOV: () => {},
   targetedSquares: undefined,
+  isWhiteKingChecked: false,
+  isBlackKingChecked: false,
   gameUuid: undefined
 }
 
