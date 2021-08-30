@@ -3,6 +3,7 @@ import {AbstractBoard} from "../types/board.type";
 import {Coord} from "../types/coord.type";
 import {defaultAbstractBoard} from "../types/board.type";
 import {BoardPiece} from "../types/piece.type";
+import {GameModes} from "../types/gameModes.type";
 
 export interface Board{
   abstractBoard: AbstractBoard,
@@ -14,6 +15,9 @@ export interface Board{
   targetedSquares?: Coord[]
   isWhiteKingChecked: boolean
   isBlackKingChecked: boolean
+  isGameOver: boolean
+  gameMode: GameModes
+  setGameMode: (gameMode: GameModes) => void
   gameUuid?: string
 }
 
@@ -27,6 +31,9 @@ const defaultValues = {
   targetedSquares: undefined,
   isWhiteKingChecked: false,
   isBlackKingChecked: false,
+  isGameOver: false,
+  gameMode: GameModes.NONE,
+  setGameMode: () => {},
   gameUuid: undefined
 }
 

@@ -2,8 +2,9 @@ import {ComponentProps, useContext, useEffect, useState} from "react";
 import {BoardContext} from "../../board.context";
 import {AbstractBoard, defaultAbstractBoard, fenToAbstractBoard} from "../../../types/board.type";
 import {Coord} from "../../../types/coord.type";
-import {BoardPiece, PieceKind} from "../../../types/piece.type";
+import {BoardPiece} from "../../../types/piece.type";
 import {SocketContext} from "../../socket.io.context";
+import {GameModes} from "../../../types/gameModes.type";
 
 export default function BoardProvider({ children }: ComponentProps<any>) {
   const [abstractBoard, setAbstractBoard] = useState<AbstractBoard>(defaultAbstractBoard)
@@ -13,6 +14,8 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
   const [blackPOV, setBlackPOV] = useState<boolean>(false);
   const [isWhiteKingChecked, setIsWhiteKingChecked] = useState<boolean>(false);
   const [isBlackKingChecked, setIsBlackKingChecked] = useState<boolean>(false);
+  const [isGameOver, setIsGameOver] = useState<boolean>(false);
+  const [gameMode, setGameMode] = useState<GameModes>(GameModes.LOCAL);
 
   const socketContext = useContext(SocketContext);
 
@@ -35,23 +38,36 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
       console.log('UUID: ' + JSON.parse(msg['data'])[0]['fields']['uuid'])
     })
 
-    socketContext.socket.on('make_move', function (msg) {
-      console.log(msg);
-      if (msg['isMoveValid']) {
-        setAbstractBoard(fenToAbstractBoard(msg['fen']))
-        setIsBlackKingChecked(msg.isKingCheck.b)
-        setIsWhiteKingChecked(msg.isKingCheck.w)
-      }
-      setSelectedPiece(undefined)
-    })
-
     socketContext.socket.on('ask_move', function (msg) {
+      console.log('asking moves')
       setTargetedSquares(msg)
     })
 
     socketContext.newGame();
     setAbstractBoard(fenToAbstractBoard('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'))
   }, [])
+
+  useEffect(() => {
+    if(gameUuid){
+      socketContext.socket.on('make_move', function (msg) {
+        console.log(msg);
+        if (msg['isMoveValid']) {
+          setAbstractBoard(fenToAbstractBoard(msg['fen']))
+          setIsBlackKingChecked(msg.isKingCheck.b)
+          setIsWhiteKingChecked(msg.isKingCheck.w)
+          setIsGameOver(msg.isGameOver)
+
+          if(gameMode === GameModes.IA){
+            if (!msg.isAIMove){
+              socketContext.makeMoveAI(gameUuid!)
+            }
+          }
+        }
+        setSelectedPiece(undefined)
+      })
+    }
+  }, [gameUuid]);
+
 
 
   const selectPiece = (piece: BoardPiece | undefined) => {
@@ -68,11 +84,6 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
       setSelectedPiece(undefined)
       return
     }
-    if (selectedPiece){
-      if (selectedPiece.abstractPiece.pieceKind === PieceKind.PAWN && end.row === 0){
-
-      }
-    }
     socketContext.movePiece(start, end, 6, gameUuid!)
     setTargetedSquares(undefined)
   }
@@ -88,6 +99,9 @@ export default function BoardProvider({ children }: ComponentProps<any>) {
       targetedSquares,
       isWhiteKingChecked,
       isBlackKingChecked,
+      isGameOver,
+      gameMode,
+      setGameMode,
       gameUuid
     }}>
       {children}

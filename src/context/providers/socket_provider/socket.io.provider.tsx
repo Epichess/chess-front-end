@@ -28,6 +28,13 @@ export default function SocketProvider({children}: ComponentProps<any>){
     })
   }
 
+  function makeMoveAI(uuid: string) {
+    console.log(uuid)
+    mySocket.emit('make_move_AI', {
+      uuid: uuid
+    })
+  }
+
   function askMove(start: Coord, uuid: string){
     mySocket.emit('ask_move', {
       uuid: uuid,
@@ -41,6 +48,7 @@ export default function SocketProvider({children}: ComponentProps<any>){
         pong,
         newGame,
         movePiece,
+        makeMoveAI,
         askMove,
       }}>
         {children}

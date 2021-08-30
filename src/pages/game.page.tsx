@@ -1,13 +1,9 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Board from "../components/board.component";
-import { createStyles, makeStyles, withStyles, Theme } from '@material-ui/core/styles';
-import GamePageWrapper from "./game.page.wrapper";
-import { Grid, FormControl, InputLabel, MenuItem, Select, FormHelperText, TextField } from "@material-ui/core";
-import { player } from "../audio/audio";
+import {createStyles, makeStyles, Theme, withStyles} from '@material-ui/core/styles';
+import {FormControl, InputLabel, MenuItem, Select, TextField} from "@material-ui/core";
 import banner from "../assets/anarchybanner.jpg";
 import anarchy_logo from "../assets/logo.png";
-import logo_anarchychess from "../assets/logo_anarchychess.png";
-import bg from "../assets/main_lesslesshardcore.gif";
 import styled from "styled-components";
 import InputBase from '@material-ui/core/InputBase';
 import Stepper from '@material-ui/core/Stepper';
@@ -17,7 +13,6 @@ import StepContent from '@material-ui/core/StepContent';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import FlipCameraAndroidIcon from '@material-ui/icons/FlipCameraAndroid';
 import {BoardContext} from "../context/board.context";
 import Dialog from '@material-ui/core/Dialog';
@@ -25,6 +20,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import {GameModes} from "../types/gameModes.type";
 
 
 const options = [
@@ -247,14 +243,21 @@ function getStepContent(step: number) {
 
 const GamePage = () => {
   const classes = useStyles();
-  const [age, setAge] = React.useState('5');
+  const [age, setAge] = useState('5');
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setAge(event.target.value as string);
   };
-    const [open, setOpen] = React.useState(false);
-    const [openModal, setOpenModal] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
 
-    const handleClickOpen = () => {
+  const boardContext = useContext(BoardContext);
+
+  useEffect(() => {
+    setOpen(boardContext.isGameOver)
+  }, [boardContext.isGameOver]);
+
+
+  const handleClickOpen = () => {
         setOpen(true);
     };
 
@@ -285,11 +288,11 @@ const GamePage = () => {
         setActiveStep(0);
     };
 
-    const boardContext = useContext(BoardContext);
 
-    const StyledDialog = styled(Dialog)`
-    background-color: red,
-    `
+
+    // const StyledDialog = styled(Dialog)`
+    // background-color: red;
+    // `
 
     const StyledDialogTitle = styled(DialogTitle)`
     display: flex;
@@ -372,18 +375,14 @@ const GamePage = () => {
                           Reverse Board
                       </Button>
                     </ReverseButtonDiv>
-{/*                    <Button variant="outlined" color="primary" onClick={handleClickOpen}
-                    >
-                        Echec et Mat
-                    </Button>*/}
 
-                    <StyledDialog
+                  <StyledDialog
                         open={open}
                         onClose={handleClose}
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                     >
-                        <StyledDialogTitle id="alert-dialog-title">CHECKMATE - {"WHITE"} WINS</StyledDialogTitle>
+                        <StyledDialogTitle id="alert-dialog-title">CHECKMATE</StyledDialogTitle>
                         <DialogContent>
                                 <iframe src="https://giphy.com/embed/VqTjKLGbaBI3JBdIIN" width="480" height="343"
                                         frameBorder="0" className="giphy-embed" allowFullScreen></iframe>

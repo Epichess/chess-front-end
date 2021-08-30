@@ -7,6 +7,7 @@ export interface MySocket {
   newGame: () => void;
   pong: () => void;
   movePiece: (start: Coord, end: Coord, promotionPieceType: number, uuid: string) => void;
+  makeMoveAI: (uuid: string) => void;
   askMove: (start: Coord, uuid: string) => void;
 }
 
@@ -15,6 +16,7 @@ const defaultValues = {
   newGame: () => {},
   pong: () => {},
   movePiece: () => {},
+  makeMoveAI: () => {},
   askMove: () => {}
 }
 
